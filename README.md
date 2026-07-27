@@ -78,3 +78,19 @@ You can adjust business defaults in [sylvaline/settings.py](sylvaline/settings.p
 ## 🔐 Production notes
 
 For production, set a strong secret key and configure allowed hosts before deployment. The app is already set up to use Django’s built-in authentication and staff accounts.
+
+### Northflank deployment
+
+This project is ready for Northflank with a standard Procfile and Gunicorn entrypoint.
+
+Recommended environment variables:
+- `SECRET_KEY`
+- `DEBUG=False`
+- `ALLOWED_HOSTS=your-domain.com,localhost`
+- `DATABASE_URL=postgres://...` (optional; SQLite is used by default locally)
+
+The app will start with:
+
+```bash
+gunicorn --bind 0.0.0.0:${PORT:-8000} sylvaline.wsgi:application
+```
