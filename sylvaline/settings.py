@@ -11,6 +11,12 @@ DEBUG = os.getenv('DEBUG', 'False').lower() in {'1', 'true', 'yes', 'on'}
 ALLOWED_HOSTS_VALUE = os.getenv('ALLOWED_HOSTS', '127.0.0.1,localhost')
 ALLOWED_HOSTS = [host.strip() for host in ALLOWED_HOSTS_VALUE.split(',') if host.strip()]
 
+if DEBUG:
+    ALLOWED_HOSTS += ['localhost', '127.0.0.1', '[::1]']
+
+# Allow platform-generated subdomains and preview domains.
+ALLOWED_HOSTS += ['.code.run', '.run.app', '.app.github.dev']
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
