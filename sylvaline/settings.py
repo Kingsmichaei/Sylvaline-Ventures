@@ -8,7 +8,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-sylvaline-ventures-change-
 
 DEBUG = os.getenv('DEBUG', 'False').lower() in {'1', 'true', 'yes', 'on'}
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost, 127.0.0.1')
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
