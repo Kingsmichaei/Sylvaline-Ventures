@@ -1,24 +1,15 @@
 from pathlib import Path
-import os
+from decouple import Csv, config
 import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-sylvaline-ventures-change-in-production-2024')
+SECRET_KEY = config('SECRET_KEY', default='django-insecure-sylvaline-ventures-change-in-production-2024')
 
-DEBUG = os.getenv('DEBUG', 'False').lower() in {'1', 'true', 'yes', 'on'}
+DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS_VALUE = os.getenv('ALLOWED_HOSTS', '127.0.0.1,localhost')
-ALLOWED_HOSTS = [host.strip() for host in ALLOWED_HOSTS_VALUE.split(',') if host.strip()]
-
-CSRF_TRUSTED_ORIGINS = [
-    'https://complete--sylvalinen--tpn4mpxdpmqr.code.run',
-]
-
-if os.getenv('CSRF_TRUSTED_ORIGINS'):
-    CSRF_TRUSTED_ORIGINS.extend(
-        origin.strip() for origin in os.getenv('CSRF_TRUSTED_ORIGINS').split(',') if origin.strip()
-    )
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='127.0.0.1,localhost', cast=Csv())
+CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='', cast=Csv())
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -65,23 +56,23 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'sylvaline.wsgi.application'
 
-DATABASE_URL = os.getenv('DATABASE_URL', '')
+DATABASE_URL = config('DATABASE_URL', default='')
 
-if DATABASE_URL:
+if DATABASE_URL and DATABASE_URL != 'postgres://sylvaline:your-password@localhost:5432/sylvaline':
     DATABASES = {
         'default': dj_database_url.config(default=DATABASE_URL, conn_max_age=600)
     }
 else:
-    DB_ENGINE = os.getenv('DB_ENGINE', 'django.db.backends.sqlite3')
+    DB_ENGINE = config('DB_ENGINE', default='django.db.backends.sqlite3')
     if DB_ENGINE == 'django.db.backends.postgresql':
         DATABASES = {
             'default': {
                 'ENGINE': DB_ENGINE,
-                'NAME': os.getenv('DB_NAME', 'sylvaline'),
-                'USER': os.getenv('DB_USER', 'sylvaline'),
-                'PASSWORD': os.getenv('DB_PASSWORD', ''),
-                'HOST': os.getenv('DB_HOST', 'localhost'),
-                'PORT': os.getenv('DB_PORT', '5432'),
+                'NAME': config('DB_NAME', default='sylvaline'),
+                'USER': config('DB_USER', default='sylvaline'),
+                'PASSWORD': config('DB_PASSWORD', default=''),
+                'HOST': config('DB_HOST', default='localhost'),
+                'PORT': config('DB_PORT', default='5432'),
             }
         }
     else:
