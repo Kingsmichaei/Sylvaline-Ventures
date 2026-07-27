@@ -1,1 +1,1 @@
-web: gunicorn sylvaline.wsgi:application
+web: gunicorn sylvaline.wsgi --bind 0.0.0.0:8000
