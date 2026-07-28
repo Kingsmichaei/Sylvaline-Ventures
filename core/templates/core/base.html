@@ -749,8 +749,9 @@
       {% if overdue_debts_count %}<span class="nav-badge">{{ overdue_debts_count }}</span>{% endif %}
     </a>
 
-    <div class="nav-section-label mt-2">Business</div>
+    
     {% if request.user.is_superuser %}
+    <div class="nav-section-label mt-2">Business</div>
     <a href="{% url 'staff_list' %}" class="nav-link-item {% if 'staff' in request.resolver_match.url_name %}active{% endif %}">
       <span class="nav-icon"><i class="bi bi-person-badge-fill"></i></span>
       Staff
