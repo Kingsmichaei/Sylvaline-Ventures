@@ -377,12 +377,18 @@ def income_delete(request, pk):
 
 @login_required
 def staff_list(request):
+    if not request.user.is_superuser:
+        messages.error(request, 'You do not have permission to access staff management.')
+        return redirect('dashboard')
     staff = Staff.objects.all()
     return render(request, 'core/staff_list.html', {'staff': staff})
 
 
 @login_required
 def staff_add(request):
+    if not request.user.is_superuser:
+        messages.error(request, 'You do not have permission to access staff management.')
+        return redirect('dashboard')
     form = StaffForm(request.POST or None)
     if form.is_valid():
         staff = form.save(commit=False)
@@ -415,6 +421,9 @@ def staff_add(request):
 
 @login_required
 def staff_edit(request, pk):
+    if not request.user.is_superuser:
+        messages.error(request, 'You do not have permission to access staff management.')
+        return redirect('dashboard')
     staff = get_object_or_404(Staff, pk=pk)
     form = StaffForm(request.POST or None, instance=staff)
     if form.is_valid():
@@ -453,6 +462,9 @@ def staff_edit(request, pk):
 
 @login_required
 def staff_delete(request, pk):
+    if not request.user.is_superuser:
+        messages.error(request, 'You do not have permission to access staff management.')
+        return redirect('dashboard')
     staff = get_object_or_404(Staff, pk=pk)
     if request.method == 'POST':
         name = staff.name

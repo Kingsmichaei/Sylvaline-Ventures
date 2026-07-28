@@ -750,10 +750,12 @@
     </a>
 
     <div class="nav-section-label mt-2">Business</div>
+    {% if request.user.is_superuser %}
     <a href="{% url 'staff_list' %}" class="nav-link-item {% if 'staff' in request.resolver_match.url_name %}active{% endif %}">
       <span class="nav-icon"><i class="bi bi-person-badge-fill"></i></span>
       Staff
     </a>
+    {% endif %}
   </nav>
 
   <div class="p-3 border-top" style="border-color: var(--border) !important;">
@@ -766,9 +768,12 @@
         <div style="font-size:11px;color:var(--text-3);">Owner / Admin</div>
       </div>
     </div>
-    <a href="{% url 'logout' %}" class="btn-sv btn-sv-glass w-100 justify-content-center" style="font-size:13px;padding:8px 12px;">
-      <i class="bi bi-box-arrow-right"></i> Sign Out
-    </a>
+    <form method="post" action="{% url 'logout' %}" class="w-100">
+      {% csrf_token %}
+      <button type="submit" class="btn-sv btn-sv-glass w-100 justify-content-center" style="font-size:13px;padding:8px 12px;">
+        <i class="bi bi-box-arrow-right"></i> Sign Out
+      </button>
+    </form>
   </div>
 </aside>
 
